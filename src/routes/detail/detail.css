@@ -1,0 +1,58 @@
+.detail-button {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid red;
+  color: white;
+  z-index: 1000;
+
+}
+
+.detail-button:after {
+  content: " ";
+  width: 100%;
+  height: 100%;
+  background: #d0021b;
+  position: absolute;
+  transition: all 0.4s ease-in-out;
+  left: 0;
+}
+
+.detail-button:hover::after {
+  left: auto;
+  right: 0;
+  width: 0%;
+}
+
+.detail-button span {
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+  color: white;
+  padding: 0 15px;
+  z-index: 20;
+  transition: all 0.3s ease-in-out;
+}
+.detail-button:hover span {
+  animation: scaleUp 0.3s ease-in-out;
+  color: black;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

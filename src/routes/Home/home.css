@@ -1,0 +1,156 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.card {
+  overflow: hidden;
+}
+.card img {
+  transition: transform 8s;
+}
+.card:hover img {
+  transform: scale(1.2);
+}
+
+.card2 {
+  overflow: hidden;
+}
+.card2 img {
+  transition: transform 8s;
+}
+.card2:hover img {
+  transform: scale(1.2);
+}
+
+.card3 {
+  overflow: hidden;
+}
+.card3 img {
+  transition: transform 8s;
+}
+.card3:hover img {
+  transform: scale(1.2);
+}
+
+.card-bottom {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.card-button {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+.card-button:after {
+  content: " ";
+  width: 100%;
+  height: 100%;
+  background: white;
+  position: absolute;
+  transition: all 0.4s ease-in-out;
+  left: 0;
+}
+
+.card-button:hover::after {
+  left: auto;
+  right: 0;
+  width: 0%;
+}
+
+.card-button span {
+  font-size: 12px;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+  padding: 5px 15px;
+  color: black;
+
+  z-index: 20;
+  transition: all 0.3s ease-in-out;
+}
+.card-button:hover span {
+  animation: scaleUp 0.3s ease-in-out;
+  color: white;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* New product */
+.product-title {
+  text-overflow: ellipsis;
+}
+.product-card {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.product-info h2:hover {
+  color: #940141;
+}
+.product-card .default-img,
+.product-card .hover-img {
+  transition: opacity 0.3s ease;
+}
+
+.product-card .hover-img {
+  opacity: 0;
+  display: none;
+}
+
+.product-card:hover .default-img {
+  opacity: 0;
+  display: none;
+}
+
+.product-card:hover .hover-img {
+  opacity: 1;
+  display: block;
+}
+
+/* sectionCard */
+.section-card-1:hover img {
+  transform: scale(1.2);
+}
+.section-card-1 img {
+  transition: transform 8s;
+}
+
+@media screen and (max-width: 576px) {
+  .new-product {
+    padding: 0 10px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+ .card-bottom {
+  display: none;
+ }
+ .card-text{
+  display: none;
+ }
+ .card:hover .card-text{
+  display: block;
+ }
+ .card:hover span{
+
+padding: 0;
+ }
+ 
+}
