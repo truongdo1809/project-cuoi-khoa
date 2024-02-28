@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import "./detail.css";
 import { Link, useParams } from "react-router-dom";
 import ProductRelate from "./ProductRelate";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../assets/features/fireBaseStore/ConFigStote";
 
 const Detail = () => {

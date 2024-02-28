@@ -34,7 +34,7 @@ const Register = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+
   } = useForm<SingUpFormValues>();
   const [loading, setLoading] = useState(false);
   const {user}=useSelector(AuthSelector)

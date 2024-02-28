@@ -37,7 +37,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<SinginFormValues>();
   const [loading, setLoading] = useState(false);
   const { user } = useSelector(AuthSelector);

@@ -21,7 +21,7 @@ import { BiMailSend } from "react-icons/bi";
 import { ImLocation } from "react-icons/im";
 
 import { HiPhone } from "react-icons/hi";
-import { Link } from "react-router-dom";
+
 const SocialButton = ({
   children,
   label,
