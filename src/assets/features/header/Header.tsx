@@ -49,7 +49,8 @@ const Header = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [users, setUser] = useState<User | null>(null);
 
-  // console.log(users);
+  console.log(users);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   //lấy thông tin sản phẩm theo user người dùng

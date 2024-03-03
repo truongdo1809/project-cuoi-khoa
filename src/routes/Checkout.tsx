@@ -6,7 +6,7 @@ import { auth } from "../assets/features/firebase/ConFig";
 import { CartItem } from "./cart/Cart";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../assets/features/fireBaseStore/ConFigStote";
-import { FaXmark } from "react-icons/fa6";
+// import { FaXmark } from "react-icons/fa6";
 const Checkout = () => {
 
   const [user, setUser] = useState<User | null>(null);
