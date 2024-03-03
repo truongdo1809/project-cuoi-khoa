@@ -7,7 +7,7 @@ import Roots from "./assets/features/layouts/Roots.tsx";
 import Home from "./routes/Home/Home.tsx";
 import Product from "./routes/products/Product.tsx";
 import Detail from "./routes/detail/Detail.tsx";
-import Cart from "./routes/Cart.tsx";
+
 import Checkout from "./routes/Checkout.tsx";
 import Login from "./routes/login/Login.tsx";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -15,6 +15,8 @@ import { Provider } from "react-redux";
 import { store } from "./assets/features/store/store.ts";
 import NotFound from "./routes/NotFound.tsx";
 import Register from "./routes/register/Register.tsx";
+import Cart from "./routes/cart/Cart.tsx";
+
 
 const router = createBrowserRouter([
   {
@@ -40,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: "cart",
-        element: <Cart />,
+        element:<Cart/>
       },
       {
         path: "checkout",

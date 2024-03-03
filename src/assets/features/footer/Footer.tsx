@@ -115,19 +115,19 @@ const Footer = () => {
               </Box>
               <Stack direction={"row"} spacing={6}>
                 <SocialButton label={"Twitter"} href={"#"}>
-                  <img src="Home.images/footer_icon_1.webp" alt="" />
+                  <img src="/Home.images/footer_icon_1.webp" alt="" />
                 </SocialButton>
                 <SocialButton label={"YouTube"} href={"#"}>
-                  <img src="Home.images/footer_icon_2.webp" alt="" />
+                  <img src="/Home.images/footer_icon_2.webp" alt="" />
                 </SocialButton>
                 <SocialButton label={"Instagram"} href={"#"}>
-                  <img src="Home.images/footer_icon_3.webp" alt="" />
+                  <img src="/Home.images/footer_icon_3.webp" alt="" />
                 </SocialButton>
                 <SocialButton label={"Instagram"} href={"#"}>
-                  <img src="Home.images/footer_icon_4.webp" alt="" />
+                  <img src="/Home.images/footer_icon_4.webp" alt="" />
                 </SocialButton>
                 <SocialButton label={"Instagram"} href={"#"}>
-                  <img src="Home.images/footer_icon_5.webp" alt="" />
+                  <img src="/Home.images/footer_icon_5.webp" alt="" />
                 </SocialButton>
               </Stack>
             </Stack>

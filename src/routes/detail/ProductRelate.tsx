@@ -1,3 +1,4 @@
+import { Spinner } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { BsCart2 } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -37,12 +38,20 @@ const ProductRelate = () => {
           randomProducts[i],
         ];
       }
-      return randomProducts.slice(10, 15);
+      return randomProducts.slice(10, 14);
     }
     return [];
   }
   if (isLoading) {
-    return <div>loading...</div>;
+    return <div className="text-center">
+    <Spinner
+      thickness="4px"
+      speed="0.65s"
+      emptyColor="gray.200"
+      color="blue.500"
+      size="xl"
+    />
+  </div>;
   }
   if (isError) {
     return <div>{JSON.stringify(error)} </div>;
@@ -53,10 +62,10 @@ const ProductRelate = () => {
   return (
     <div className="font-sans  pb-20">
       <div className="heading text-center py-12">
-        <h1 className="text-4xl font-medium">Sản Phẩm Liên Quan</h1>
+        <h1 className="text-2xl sm:text-4xl font-medium">Sản Phẩm Liên Quan</h1>
       </div>
 
-      <div className="new-product grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 md:px-16 px-8  gap-5">
+      <div className="new-product grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:px-16 px-8  gap-5">
         {randomProducts.map((product: ProductItem) => (
           <div className="product-card w-full rounded-lg" key={product.id}>
             <Link to={`/detail/${product.id}`}>

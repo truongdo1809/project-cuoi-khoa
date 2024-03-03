@@ -12,7 +12,6 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-
 import { OAuthButtonGroup } from "./AuthButtonGroup";
 import { PasswordField } from "./PasswordField";
 import { useForm } from "react-hook-form";

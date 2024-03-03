@@ -21,6 +21,8 @@ import { auth } from "../../assets/features/firebase/ConFig";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthAction, AuthSelector } from "../../assets/features/store/AuthSlice";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../assets/features/fireBaseStore/ConFigStote";
 
 type SingUpFormValues = {
   name: string;
@@ -45,33 +47,41 @@ const Register = () => {
     }
   },[user,Navigates])
 const dispatch =useDispatch()
-  const onSubmit = (values: SingUpFormValues) => {
-    setLoading(true);
-    createUserWithEmailAndPassword(auth, values.email, values.password)
-      .then((credentail) => {
-       updateProfile(credentail.user, {
+const onSubmit = (values: SingUpFormValues) => {
+  setLoading(true);
+  createUserWithEmailAndPassword(auth, values.email, values.password)
+    .then((credentail) => {
+     updateProfile(credentail.user, {
+        displayName: values.name,
+      }).then(()=>{
+        const usersCollection = collection(db, 'users'); 
+        addDoc(usersCollection, {
           displayName: values.name,
-        }).then(()=>{
-        dispatch(AuthAction.authenticated({
-          displayName:credentail.user.displayName,
-          email: credentail.user.email,
-          photoURL: credentail.user.photoURL,
-        }))
+          email: values.email,
+        }).then(() => {
+          dispatch(AuthAction.authenticated({
+            displayName:credentail.user.displayName,
+            email: credentail.user.email,
+            photoURL: credentail.user.photoURL,
+          }))
+        }).catch((error) => {
+          console.error("Error adding document: ", error);
         });
-      })
-      .catch((error) => {
-        console.error(error)
-        ;
-        toast({
-          status:"error",
-          title:"Authenticzation faiiled",
-          description: error.message
-        })
-      })
-      .finally(() => {
-        setLoading(false);
       });
-  };
+    })
+    .catch((error) => {
+      console.error(error);
+      toast({
+        position: 'top-right',
+        status:"error",
+        title:"Authentication failed",
+        description: error.message
+      });
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+};
 
   return (
     <>
