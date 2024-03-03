@@ -202,7 +202,7 @@ const Detail = () => {
          {data.slider.map((img:string, index:number) => ( 
           
         <SwiperSlide key={index}> 
-          <img src={img} alt={`Slide ${index}`} /> 
+          <img className=" w-full h-full object-cover" src={img} alt={`Slide ${index}`} /> 
          
         </SwiperSlide>
       ))}
