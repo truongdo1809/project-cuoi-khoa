@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { GrCart } from "react-icons/gr";
+// import { GrCart } from "react-icons/gr";
 import { useEffect, useState } from "react";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../assets/features/firebase/ConFig";
@@ -8,10 +8,18 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../assets/features/fireBaseStore/ConFigStote";
 // import { FaXmark } from "react-icons/fa6";
 const Checkout = () => {
-
   const [user, setUser] = useState<User | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
 
+
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  // Sử dụng useEffect để thay đổi trạng thái của checkbox khi component được tạo ra
+  useEffect(() => {
+    // Thiết lập trạng thái của checkbox thành true khi component được tạo ra
+    setIsChecked(true);
+  }, []); 
   //lấy thông tin sản phẩm theo user người dùng
   console.log(user);
   useEffect(() => {
@@ -39,15 +47,24 @@ const Checkout = () => {
     };
   }, []);
 
-console.log(cart);
- // format giá tiền
- const formatPrice = (price: number): string => {
-  return price.toLocaleString("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  });
-};
+  //tính tổng tiền
+  const sumPrice = (cart: CartItem[]): number => {
+    let total = 0;
+    cart.forEach((item) => {
+      total += item.priceSale * item.quantity;
+    });
+    return total;
+  };
+  const totalPrice = sumPrice(cart);
 
+  console.log(cart);
+  // format giá tiền
+  const formatPrice = (price: number): string => {
+    return price.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+  };
 
   return (
     <div className=" font-sans">
@@ -63,24 +80,14 @@ console.log(cart);
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-2 px-[75px]  pb-16 mx-32  pt-14">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:px-[75px]  pb-16 mx-32  pt-14">
         <div className="checkout-left">
-          <Link to={"/"}>
-            {" "}
-            <h1 className=" text-3xl font-bold">
-              TOMOYO-Thế giới đồ da thủ công công nghệ Nhật
-            </h1>
-          </Link>
           <span className=" text-lg font-bold my-5 block">
             Thông tin giao hàng:
           </span>
           <div className="flex flex-col justify-center">
-            <div className=" sm:w-full sm:max-w-sm">
-              <form
-                className="space-y-6 w-full min-w-[600px]"
-                action="#"
-                method="POST"
-              >
+            <div className=" w-full">
+              <form className="space-y-6 " action="#" method="POST">
                 <div>
                   <div className="mt-2">
                     <input
@@ -123,7 +130,6 @@ console.log(cart);
                   <div className=" p-4">
                     {" "}
                     <input
-                    
                       id="Number"
                       name="Number"
                       type="checkbox"
@@ -131,6 +137,7 @@ console.log(cart);
                       // autoComplete="current-password"
                       required
                       className="  text-gray-900 shadow-sm    sm:text-sm sm:leading-6"
+                      checked={isChecked}
                     />
                     <span className="ms-4">Giao hàng tận nơi</span>
                   </div>
@@ -145,12 +152,26 @@ console.log(cart);
                       className="block w-full rounded-md border-0  py-3 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
+                  <div className=" p-4">
+                    {" "}
+                    <input
+                      id="Number"
+                      name="Number"
+                      type="checkbox"
+                      placeholder="Number"
+                      // autoComplete="current-password"
+                      required
+                      className="  text-gray-900 shadow-sm    sm:text-sm sm:leading-6"
+                    />
+                    <span className="ms-4">Nhận tại cửa hàng</span>
+                  </div>
+                  
                 </div>
                 <div className="flex items-center justify-between">
                   <div className=" font-bold text-xl text-[#3DA9E2] hover:text-[#338bdc]">
                     <Link to={"/cart"} className="flex items-center">
                       {" "}
-                      <GrCart className=" mr-2" />
+                      {/* <GrCart className=" mr-2" /> */}
                       giỏ hàng
                     </Link>
                   </div>
@@ -165,69 +186,58 @@ console.log(cart);
             </div>
           </div>
         </div>
-        <div className="checkout-right ps-12">
-          { cart.map((item) => (
-              <div
-                key={item.id}
-                className="flex border-b-[1px] border-solid border-[##F5F5F5] py-2 "
-              >
-                <div className=" w-[155px] h-[155px] ">
-                  <img src={item.img} alt={item.title} />
-                </div>
-                <div className="md:ps-5 ps-3  w-full flex flex-col gap-2">
-                 
-                    <div className=" text-base font-bold">{item.title}</div>
-                   
-               
-                  <div className="">
-                    <span className=" text-base">
-                      {formatPrice(item.priceSale)}
-                    </span>
+        <div className="checkout-right lg:ps-12  pt-14 lg:pt-0">
+          <span className=" text-lg font-bold my-5 block">
+            Thông tin sản phẩm:
+          </span>
+          {cart.map((item) => (
+            <div
+              key={item.id}
+              className="flex border-b-[1px] border-solid border-[##F5F5F5] "
+            >
+              <div className=" w-[155px] h-[155px]  relative">
+                <img src={item.img} alt={item.title} />
+                <span className=" absolute bg-[#A09F9F] p-3 rounded-full w-[2em] h-[2em] text-white flex items-center -right-3 -top-3">{item.quantity}</span>
+              </div>
+              <div className="md:ps-5 ps-3  w-full flex flex-col gap-2">
+                <div className=" text-base font-bold">{item.title}</div>
 
-                    <span className=" text-sm ps-2 text-[#777]">
-                      ({formatPrice(item.price)})
-                    </span>
-                  </div>
+                <div className="">
+                  <span className=" text-base">
+                    {formatPrice(item.priceSale)}
+                  </span>
+
+                  <span className=" text-sm ps-2 text-[#777] relative">
+                    ({formatPrice(item.price)})
+                    <p className="w-12 md:w-[76px] bg-[#939393] h-[1px] absolute right-0 bottom-[4px] sm:bottom-[9px]"></p>
+                  </span>
+                </div>
+                <div className="md:flex md:items-center md:justify-between  flex-none ">
                   <span className="flex">
                     Size <p>/</p>
                     {item.size}
                   </span>
-                  <div className="md:flex md:items-center md:justify-between  flex-none ">
-                    <div className="  ">
-                      <button
-                        className=" text-sm md:text-xl w-[40px] h-[40px] bg-[#F5F5F5] font-bold"
-                       
-                      >
-                        -
-                      </button>
-                      <input
-                        type="number"
-                        min={1}
-                        max={100}
-                        className=" text-sm md:text-xl focus:outline-none text-center border-2 border-solid border-[#F5F5F5] py-2 md:py-1"
-                        value={item.quantity}
-                      
-                      />
 
-                      <button
-                        className="  text-sm md:text-xl w-[40px] h-[40px] 1 bg-[#F5F5F5] font-bold"
-                      
-                      >
-                        +
-                      </button>
-                    </div>
-                    <div className=" text-base font-bold flex items-center md:pt-0 pt-3">
-                      <span className="md:hidden block pr-2 text-sm">
-                        Thành tiền:
-                      </span>
-                      {formatPrice(item.priceSale)}
-                    </div>
+                  <div className=" text-base font-bold flex items-center md:pt-0 pt-3">
+                    <span className="md:hidden block pr-2 text-sm">
+                      Thành tiền:
+                    </span>
+                    {formatPrice(item.priceSale)}
                   </div>
                 </div>
               </div>
-            ))
-             }
           
+            </div>
+          ))}
+          <div className=" py-7  border-b flex items-center justify-between ">
+            <input type="number" placeholder="Mã giảm giá"  className=" py-4  border w-9/12 mr-3 rounded-md px-4 focus:outline-[#3DA9E2]"/>
+            <button className="bg-[#c8c8c8] text-sm font-bold text-white py-4 px-6 rounded-sm focus:bg-[#3DA9E2]">Sử dụng</button>
+
+          </div>
+              <div className="flex items-center justify-between border-b">
+                <span className=" text-base font-bold">Tổng Tiền:</span>
+                <span className="  text-lg font-semibold py-10 ">{formatPrice(totalPrice)}</span>
+              </div>
         </div>
       </div>
     </div>

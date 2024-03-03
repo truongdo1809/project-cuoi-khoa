@@ -184,8 +184,10 @@ const Cart = () => {
                         {formatPrice(item.priceSale)}
                       </span>
 
-                      <span className=" text-sm ps-2 text-[#777]">
+                      <span className=" text-sm ps-2 text-[#777] relative ">
                         ({formatPrice(item.price)})
+                  <p className="w-12 md:w-[76px] bg-[#939393] h-[1px] absolute right-0 bottom-[4px] sm:bottom-[9px]"></p>
+
                       </span>
                     </div>
                     <span className="flex">
