@@ -11,7 +11,7 @@ const Navigation = () => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset;
 
-      if (scrollTop > 500) {
+      if (scrollTop > 400) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -108,7 +108,7 @@ const Navigation = () => {
         </div>
       ) : (
         <div></div>
-      )}{" "}
+      )}
     </>
   );
 };
