@@ -38,10 +38,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../fireBaseStore/ConFigStote";
 
 const Header = () => {
-
-
-  
-  
   const [query, changeQuery] = useState("");
   const navigate = useNavigate();
   const { user } = useSelector(AuthSlice.selectSlice);
@@ -49,14 +45,13 @@ const Header = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [users, setUser] = useState<User | null>(null);
 
-  console.log(users);
+  console.log(users, cart);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   //lấy thông tin sản phẩm theo user người dùng
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      // console.log("User", user);
       setUser(user);
 
       if (user) {
@@ -123,8 +118,12 @@ const Header = () => {
                             <AccordionIcon />
                           </AccordionButton>
                         </h2>
-                        <AccordionPanel paddingLeft={0} paddingRight={0}  onClick={onClose}>
-                          <li className=" py-3 border-b-2 border-solid border-[#F5F5F5]" >
+                        <AccordionPanel
+                          paddingLeft={0}
+                          paddingRight={0}
+                          onClick={onClose}
+                        >
+                          <li className=" py-3 border-b-2 border-solid border-[#F5F5F5]">
                             <Link to={"/product?type=Giày Tây Nam"}>
                               Giày Tây Nam
                             </Link>
@@ -168,10 +167,12 @@ const Header = () => {
                   Bạn Cần Hộ Trợ ?
                 </Box>
                 <Box display={"flex"} alignItems={"center"} paddingTop={"20px"}>
-                  <FaPhoneVolume fontSize={"20px"} color="#9C0215"/> <Box paddingLeft={"15px"}>Liên Hệ: 097 165 4347</Box>
+                  <FaPhoneVolume fontSize={"20px"} color="#9C0215" />{" "}
+                  <Box paddingLeft={"15px"}>Liên Hệ: 097 165 4347</Box>
                 </Box>
                 <Box display={"flex"} alignItems={"center"} paddingTop={"20px"}>
-                  <MdMarkEmailUnread fontSize={"25px"} color="#1877F2"/> <Box paddingLeft={"15px"}>Tomoyovn@outlook.com</Box>
+                  <MdMarkEmailUnread fontSize={"25px"} color="#1877F2" />{" "}
+                  <Box paddingLeft={"15px"}>Tomoyovn@outlook.com</Box>
                 </Box>
               </DrawerBody>
             </DrawerContent>

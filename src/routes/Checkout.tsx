@@ -1,30 +1,33 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { GrCart } from "react-icons/gr";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../assets/features/firebase/ConFig";
 import { CartItem } from "./cart/Cart";
-import { doc, getDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../assets/features/fireBaseStore/ConFigStote";
+import { useToast } from "@chakra-ui/react";
 // import { FaXmark } from "react-icons/fa6";
 const Checkout = () => {
   const [user, setUser] = useState<User | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
+  const [address, setAddress] = useState("");
 
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const [isChecked, setIsChecked] = useState(false);
 
-  // Sử dụng useEffect để thay đổi trạng thái của checkbox khi component được tạo ra
   useEffect(() => {
-    // Thiết lập trạng thái của checkbox thành true khi component được tạo ra
     setIsChecked(true);
-  }, []); 
-  //lấy thông tin sản phẩm theo user người dùng
-  console.log(user);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      // console.log("User", user);
       setUser(user);
 
       if (user) {
@@ -66,6 +69,68 @@ const Checkout = () => {
     });
   };
 
+  const clearCart = async () => {
+    try {
+      if (user) {
+        await deleteDoc(doc(db, "users", user.uid));
+        setCart([]);
+      }
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+    }
+  };
+
+  const setValueForm = (inputName: any, value: SetStateAction<string>) => {
+    switch (inputName) {
+      case "name":
+        setName(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "number":
+        setNumber(value);
+        break;
+      case "address":
+        setAddress(value);
+        break;
+      default:
+        break;
+    }
+  };
+  let isFormValid = false;
+
+  const validateForm = () => {
+    const name = document.getElementById("name") as HTMLInputElement;
+    const email = document.getElementById("email") as HTMLInputElement;
+    const number = document.getElementById("Number") as HTMLInputElement;
+    const address = document.getElementById("address") as HTMLInputElement;
+
+    const isNameValid = name.value.trim() !== "";
+    const isEmailValid = email.value.trim() !== "";
+    const isNumberValid = number.value.trim() !== "";
+    const isAddressValid = address.value.trim() !== "";
+
+    isFormValid =
+      isNameValid && isEmailValid && isNumberValid && isAddressValid;
+  };
+
+  const handleCheckout = async () => {
+    validateForm();
+
+    if (isFormValid) {
+      await clearCart();
+      toast({
+        position: "top-right",
+        status: "success",
+        title: "Bạn đã thanh toán thành công. Mời bạn tiếp tục mua sắm!",
+      });
+      navigate("/");
+    } else {
+      console.log("Vui lòng điền đầy đủ thông tin.");
+    }
+  };
+
   return (
     <div className=" font-sans">
       <div>
@@ -98,6 +163,8 @@ const Checkout = () => {
                       required
                       placeholder="Họ Tên"
                       className=" block w-full rounded-md border-0  py-3 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  sm:leading-6"
+                      value={name}
+                      onChange={(e) => setValueForm("name", e.target.value)}
                     />
                   </div>
                 </div>
@@ -112,6 +179,8 @@ const Checkout = () => {
                       autoComplete="current-password"
                       required
                       className="block w-full rounded-md border-0  py-3 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      value={email}
+                      onChange={(e) => setValueForm("email", e.target.value)}
                     />
                   </div>
                   <div className="mt-2 w-5/12">
@@ -123,6 +192,8 @@ const Checkout = () => {
                       // autoComplete="current-password"
                       required
                       className="block w-full rounded-md border-0  py-3 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      value={number}
+                      onChange={(e) => setValueForm("number", e.target.value)}
                     />
                   </div>
                 </div>
@@ -143,29 +214,27 @@ const Checkout = () => {
                   </div>
                   <div className="mt-2  p-4 border-t bg-[#FAFAFA] ">
                     <input
-                      id="text"
-                      name="text"
+                      id="address"
+                      name="address"
                       type="text"
                       placeholder="Địa chỉ "
                       // autoComplete="current-password"
                       required
                       className="block w-full rounded-md border-0  py-3 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      value={address}
+                      onChange={(e) => setValueForm("address", e.target.value)}
                     />
                   </div>
-                  <div className=" p-4">
+                  {/* <div className=" p-4">
                     {" "}
                     <input
-                      id="Number"
-                      name="Number"
                       type="checkbox"
-                      placeholder="Number"
                       // autoComplete="current-password"
                       required
                       className="  text-gray-900 shadow-sm    sm:text-sm sm:leading-6"
                     />
                     <span className="ms-4">Nhận tại cửa hàng</span>
-                  </div>
-                  
+                  </div> */}
                 </div>
                 <div className="flex items-center justify-between">
                   <div className=" font-bold text-xl text-[#3DA9E2] hover:text-[#338bdc]">
@@ -175,9 +244,11 @@ const Checkout = () => {
                       giỏ hàng
                     </Link>
                   </div>
+
                   <button
                     type="submit"
                     className="flex justify-center py-4 w-8/12 rounded-md bg-[#3DA9E2] text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    onClick={handleCheckout}
                   >
                     Thanh Toán
                   </button>
@@ -197,7 +268,9 @@ const Checkout = () => {
             >
               <div className=" w-[155px] h-[155px]  relative">
                 <img src={item.img} alt={item.title} />
-                <span className=" absolute bg-[#A09F9F] p-3 rounded-full w-[2em] h-[2em] text-white flex items-center -right-3 -top-3">{item.quantity}</span>
+                <span className=" absolute bg-[#A09F9F] p-3 rounded-full w-[2em] h-[2em] text-white flex items-center -right-3 -top-3">
+                  {item.quantity}
+                </span>
               </div>
               <div className="md:ps-5 ps-3  w-full flex flex-col gap-2">
                 <div className=" text-base font-bold">{item.title}</div>
@@ -226,18 +299,24 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-          
             </div>
           ))}
           <div className=" py-7  border-b flex items-center justify-between ">
-            <input type="number" placeholder="Mã giảm giá"  className=" py-4  border w-9/12 mr-3 rounded-md px-4 focus:outline-[#3DA9E2]"/>
-            <button className="bg-[#c8c8c8] text-sm font-bold text-white py-4 px-6 rounded-sm focus:bg-[#3DA9E2]">Sử dụng</button>
-
+            <input
+              type="number"
+              placeholder="Mã giảm giá"
+              className=" py-4  border w-9/12 mr-3 rounded-md px-4 focus:outline-[#3DA9E2]"
+            />
+            <button className="bg-[#c8c8c8] text-sm font-bold text-white py-4 px-6 rounded-sm focus:bg-[#3DA9E2]">
+              Sử dụng
+            </button>
           </div>
-              <div className="flex items-center justify-between border-b">
-                <span className=" text-base font-bold">Tổng Tiền:</span>
-                <span className="  text-lg font-semibold py-10 ">{formatPrice(totalPrice)}</span>
-              </div>
+          <div className="flex items-center justify-between border-b">
+            <span className=" text-base font-bold">Tổng Tiền:</span>
+            <span className="  text-lg font-semibold py-10 ">
+              {formatPrice(totalPrice)}
+            </span>
+          </div>
         </div>
       </div>
     </div>
