@@ -47,6 +47,7 @@ const Header = () => {
   const { user } = useSelector(AuthSlice.selectSlice);
 
   const [cart, setCart] = useState<CartItem[]>([]);
+  console.log(cart)
   const [users, setUser] = useState<User | null>(null);
 
   console.log(users);

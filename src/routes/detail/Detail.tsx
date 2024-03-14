@@ -5,7 +5,7 @@ import ProductRelate from "./ProductRelate";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../assets/features/fireBaseStore/ConFigStote";
 import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../assets/features/firebase/ConFig";
 import { Spinner, useToast } from "@chakra-ui/react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -36,7 +36,7 @@ const Detail = () => {
   });
 
   const toast = useToast();
-  const [user, changeUser] = useState<any>();
+  const [user, changeUser] = useState<User|null>();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       // console.log("User", user);
@@ -72,7 +72,7 @@ const Detail = () => {
     const userData = userSnap.data();
 
     if (userData && userData.items) {
-      let updatedItems = userData.items.map((item: Item) => {
+      const updatedItems = userData.items.map((item: Item) => {
         if (item.id === data.id) {
           // Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng mới
           const newQuantity = item.quantity + quantity;
@@ -126,7 +126,7 @@ const Detail = () => {
     }
   };
 
-  const handleQuantityChange = (event: any) => {
+  const handleQuantityChange = (event: { target: { value: string; }; }) => {
     let value = parseInt(event.target.value);
     if (value < 1) {
       // Nếu giá trị nhỏ hơn 1, sẽ set giá trị là 1
@@ -276,6 +276,7 @@ const Detail = () => {
           </div>
         </div>
       </div>
+     
       <ProductRelate />
     </div>
   );
